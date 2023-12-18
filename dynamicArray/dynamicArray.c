@@ -8,9 +8,13 @@ enum STATUS_CODE
     ON_SUCCESS,
     NULL_PTR,
     MALLOC_ERROR,
+    INVALID_ACCESS,
 };
 
 #define DEFAULT_SIZE 10
+
+
+static int expandDynamicCapacity(dynamicArray *pArray);
 
 /* 动态数组初始化 */
 int dynamicArrayInit(dynamicArray *pArray, int capacity)
@@ -20,29 +24,110 @@ int dynamicArrayInit(dynamicArray *pArray, int capacity)
         return NULL_PTR;
     }
     
+    /* 避免传入非法值 */
     if(capacity < 0)
     {
         capacity = DEFAULT_SIZE;
     }
 
+    /* 分配空间 */
     pArray->data = (ELEMENTTYPE *)malloc(sizeof(ELEMENTTYPE) * capacity);
     if(pArray->data == NULL)
     {
         return MALLOC_ERROR;
     }
+    /* 清除脏数据 */
     memset(pArray->data, 0, sizeof(ELEMENTTYPE) * capacity);
-
+    /* 初始化动态数组的参数属性 */
     pArray->len = 0;
     pArray->capactity = capacity;
 
     return ON_SUCCESS;
 }
 
-/* 动态数组插入数据(默认插入到数组末尾) */
-int dynamicArrayInsertData(dynamicArray *pArray, ELEMENTTYPE val);
-/* 动态数组插入数据在指定位置插入 */
-int dynamicArrayAppoitPosInserData(dynamicArray *pArry, int pos, ELEMENTTYPE val);
 
+
+/* 动态数组插入数据(默认插入到数组末尾) */
+int dynamicArrayInsertData(dynamicArray *pArray, ELEMENTTYPE val)
+{
+    return dynamicArrayAppoitPosInserData(pArray, pArray->len, val);
+
+}
+
+/* 动态数组扩容*/
+static int expandDynamicCapacity(dynamicArray *pArray)
+{
+    int ret = 0;
+
+    int needExpandCapacity = pArray->capactity + (pArray->capactity >> 1);
+    
+    /* 备份指针 */
+    ELEMENTTYPE * tmpPtr = pArray->data;
+    pArray->data = (ELEMENTTYPE *)malloc(sizeof(ELEMENTTYPE) * needExpandCapacity);
+    if(pArray->data == NULL)
+    {
+        return MALLOC_ERROR;
+    }
+
+    /* 把以前的数据全部拷贝过来 */
+    for(int idx = 0; idx < pArray->len; idx++)
+    {
+        pArray->data[idx] = tmpPtr[idx];
+    }
+
+    /* 释放以前的内存 避免内存泄漏 */
+    if(tmpPtr != NULL)
+    {
+        free(tmpPtr);
+        tmpPtr = NULL;
+    }
+    
+    /* 更新长度 */
+    pArray->capactity = needExpandCapacity; 
+    return ret;
+}
+
+
+/* 动态数组插入数据在指定位置插入 */
+int dynamicArrayAppoitPosInserData(dynamicArray *pArry, int pos, ELEMENTTYPE val)
+{
+    /* 指针判空 */
+    if(pArry == NULL)
+    {
+        return NULL_PTR;
+    }
+
+    /* 判断位置的合法性 */
+    if(pos < 0 || pos > pArry->len)
+    {
+        return INVALID_ACCESS;
+    }
+    #if 1
+    if((pArry->len + (pArry->len >> 1)) >= pArry->capactity)
+    {
+        /* 开始扩容 */
+        expandDynamicCapacity(pArry);
+    }
+    #else
+    /* */
+    if(pArry->len == pArry->capactity)
+
+    #endif
+
+    for(int idx =pArry->len; idx > pos; idx--)
+    {
+        pArry->data[idx] = pArry->data[idx - 1];
+    }
+
+    /* 找到对应的值 写入到数组中 */
+    pArry->data[pos] = val;
+
+    /* 数组的大小加一 */
+    (pArry->len)++;
+
+
+
+}
 /* 动态数组修改指定位置的数据 */
 int dynamicArrayModifAppointPosData(dynamicArray *pArry, int pos, ELEMENTTYPE val);
 
