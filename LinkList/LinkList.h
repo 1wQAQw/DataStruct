@@ -6,10 +6,10 @@
 /* 链表结点取别名 */
 typedef struct LinkNode
 {
-    ELEMENTTYPE *data;
+    ELEMENTTYPE data;
 
     /* 指向下一个结点的指针 */
-    struct LinkNode *ptr;  /* 指针的类型为什么是结点 */
+    struct LinkNode *next;  /* 指针的类型为什么是结点 */
     /* data */
 }LinkNode;
 
