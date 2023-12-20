@@ -181,13 +181,27 @@ int LinkListGetLength(LinkList * pList, int *pSize)
     {
         *pSize = pList->len;
     }
-    return ret;
+    /* 返回链表长度 */
+    return pList->len;
 }
 
 /* 链表的销毁 */
 int LinkListDestroy(LinkList * pList)
 {
-    
+    /* 我们使用头删释放链表 */
+    int size = 0;
+    while(LinkListGetLenegth(pList, &size))
+    {
+        inkListHeadDel(pList);
+    }
+
+    if(pList->head != NULL)
+    {
+        free(pList->head);
+        /* 指针设置为NULL */
+        pList->head = NULL;
+        pList->tail = NULL;
+    }
 }
 
 /* 链表遍历接口 */
