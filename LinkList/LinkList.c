@@ -89,6 +89,7 @@ int LinkListAppointPosInsert(LinkList * pList, int pos, ELEMENTTYPE val)
     if(pos == pList->len)
     {
         traveNode = pList->tail;
+        flag = 1;
     }
     else
     {
@@ -100,7 +101,7 @@ int LinkListAppointPosInsert(LinkList * pList, int pos, ELEMENTTYPE val)
     }
     newNode->next = traveNode->next;
     traveNode->next = newNode;
-    if(flag)
+    if(flag == 1)
     {
         /* 尾指针更新 */
         pList->tail = newNode;
@@ -113,19 +114,53 @@ int LinkListAppointPosInsert(LinkList * pList, int pos, ELEMENTTYPE val)
 /* 链表头删 */
 int LinkListHeadDel(LinkList * pList)
 {
-    
+    /* todo... */
+    LinkListDelAppointData(pList, 1);
 }
 
 /* 链表尾删 */
 int LinkListTailDel(LinkList * pList)
 {
-    
+    LinkListDelAppointData(pList, pList->len);
 }
 
 /* 链表指定位置删 */
 int LinkListDelAppointPos(LinkList * pList, int pos)
 {
-    
+    if(pList == NULL)
+    {
+        return NULL_PTR;
+    }
+
+    if(pos < 0 || pos > pList->len)
+    {
+        return INVALID_ACCESS;
+    }
+
+#if 1
+    LinkNode * travelNode = pList->head;
+#else
+    LinkNode * travelNode = pList->head->next;
+#endif
+    while (--pos)
+    {
+        /* 向后移动位置 */
+        travelNode = travelNode->next;
+        // pos--;
+    }
+    // 跳出循环找到的是那个节点
+    LinkNode * needDelNode = travelNode->next;
+    travelNode->next = needDelNode->next;
+
+    if(needDelNode != NULL)
+    {
+        free(needDelNode);
+        needDelNode = NULL;
+    }
+
+
+    /* 链表长度减减 */
+    pList->len--;
 }
 
 /* 链表删除指定的数据 */
