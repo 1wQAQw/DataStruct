@@ -137,7 +137,7 @@ int LinkListDelAppointPos(LinkList * pList, int pos)
         return NULL_PTR;
     }
 
-    if(pos < 0 || pos > pList->len)
+    if(pos <= 0 || pos > pList->len)
     {
         return INVALID_ACCESS;
     }
@@ -147,6 +147,12 @@ int LinkListDelAppointPos(LinkList * pList, int pos)
 #else
     LinkNode * travelNode = pList->head->next;
 #endif
+    int flag = 0;
+    /* 需要修改尾指针 */
+    if (pos == pList->len)
+    {
+        flag = 1;
+    }
     while (--pos)
     {
         /* 向后移动位置 */
@@ -156,13 +162,19 @@ int LinkListDelAppointPos(LinkList * pList, int pos)
     // 跳出循环找到的是那个节点
     LinkNode * needDelNode = travelNode->next;
     travelNode->next = needDelNode->next;
+    
+    if(flag = 1)
+    {
+        /* 调整尾指针 */
+        pList->tail = travelNode;
+    }
 
     if(needDelNode != NULL)
     {
         free(needDelNode);
         needDelNode = NULL;
     }
-
+ 
 
     /* 链表长度减减 */
     pList->len--;
