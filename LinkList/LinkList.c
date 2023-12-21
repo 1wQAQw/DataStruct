@@ -1,4 +1,5 @@
 #include "LinkList.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -98,10 +99,9 @@ int LinkListAppointPosInsert(LinkList * pList, int pos, ELEMENTTYPE val)
     }
     else
     {
-        while(pos)
+        while(--pos)
         {
             traveNode = traveNode->next;
-            pos--;
         }
     }
     newNode->next = traveNode->next;
@@ -120,13 +120,13 @@ int LinkListAppointPosInsert(LinkList * pList, int pos, ELEMENTTYPE val)
 int LinkListHeadDel(LinkList * pList)
 {
     /* todo... */
-    LinkListDelAppointData(pList, 1);
+    LinkListDelAppointPos(pList, 1);
 }
 
 /* 链表尾删 */
 int LinkListTailDel(LinkList * pList)
 {
-    LinkListDelAppointData(pList, pList->len);
+   LinkListDelAppointPos(pList, pList->len);
 }
 
 /* 链表指定位置删 */
@@ -180,6 +180,7 @@ int LinkListDelAppointPos(LinkList * pList, int pos)
     pList->len--;
 }
 
+/* 获取指定元素下标 */
 static int LinkListAccordAppointValGetpos(LinkList * pList, ELEMENTTYPE val, int *pPos)
 {
      /* 静态函数只给源文件的函数使用， 不需要判断合法性 */
@@ -204,23 +205,32 @@ static int LinkListAccordAppointValGetpos(LinkList * pList, ELEMENTTYPE val, int
     return NOT_FIND;
 }
 /* 链表删除指定的数据 */
-int LinkListDelAppointData(LinkList * pList, ELEMENTTYPE val)
+int LinkListDelAppointData(LinkList * pList, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
 {
     int ret = 0;
-
     /* 元素在链表中的位置 */
-    int pos = 0;
-    /* 链表的长度 */
-    int size = 0;
-    while(LinkListGetLength(pList, &size) && pos != NOT_FIND)
+    int pos = 1;
+
+    LinkNode * traverlNode = pList->head->next;
+    while(traverlNode != NULL)
     {
+        ret = compareFunc(val, traverlNode->data);
+        traverlNode = traverlNode->next;
         /* 根据指定的元素得到在链表中所在的位置 */
-        LinkListAccordAppointValGetpos(pList, val, &pos);
-        LinkListDelAppointData(pList, pos);
+        if (ret == 1)
+        {
+            // LinkListAccordAppointValGetpos(pList, val, &pos);
+            LinkListDelAppointPos(pList, pos);  
+            printf("%d\n", ret);
+            ret = 0;
+            pos--;
+         
+        }
+        pos++;
     }
 
 
-    return ret;
+    return ON_SUCCESS;
 }
 
 /* 获取链表的长度 */
@@ -244,9 +254,9 @@ int LinkListDestroy(LinkList * pList)
 {
     /* 我们使用头删释放链表 */
     int size = 0;
-    while(LinkListGetLenegth(pList, &size))
+    while((LinkListGetLength(pList, &size), &size))
     {
-        inkListHeadDel(pList);
+        LinkListHeadDel(pList);
     }
 
     if(pList->head != NULL)
@@ -259,7 +269,7 @@ int LinkListDestroy(LinkList * pList)
 }
 
 /* 链表遍历接口 */
-int LinkListForeach(LinkList * pList)
+int LinkListForeach(LinkList * pList, int (*printFunc)(ELEMENTTYPE))
 {
     if(pList == NULL)
     {
@@ -277,7 +287,12 @@ int LinkListForeach(LinkList * pList)
     LinkNode * traveNode = pList->head->next;
     while (traveNode != NULL)
     {
-        printf("traveNode->data:%d\n", traveNode->data);
+        #if 0
+            printf("traveNode->data:%d\n", traveNode->data);
+        #else
+            /* 包装器 , 钩子, 回调函数 */
+            printFunc(traveNode->data);
+        #endif
         traveNode = traveNode->next;
     }
 #endif
