@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "LinkList.h"
+#include "doubleLinkList.h"
 
 #define BUFFER_SIZE 1
 typedef struct stuInfo
@@ -37,23 +37,23 @@ int compareData(ELEMENTTYPE arg1, ELEMENTTYPE arg2)
 int main()
 {
  
-    LinkList * list = NULL;
+    DoubleLinkList * list = NULL;
     /* 链表初始化 */
-    LinkListInit(&list);
+    DoubleLinkListInit(&list);
 
     /* 插入数据 */
 #if 0
     //头插
     for(int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        LinkListHeadInsert(list, idx);
+        DoubleLinkListHeadInsert(list, idx);
     }
 #else
     //尾插
     int buffer[BUFFER_SIZE] = {6};
     for(int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        LinkListTailInsert(list, (void *)&buffer[idx]);
+        DoubleLinkListTailInsert(list, (void *)&buffer[idx]);
     }
 #endif
     // stuInfo stu1, stu2, stu3;
@@ -74,21 +74,21 @@ int main()
 
     // for (int idx = 0; idx < BUFFER_SIZE; idx++)
     // {
-    //     LinkListHeadInsert(list, (void *)&buffer[idx]);
+    //     DoubleLinkListHeadInsert(list, (void *)&buffer[idx]);
     // }
 
     // int tmp = 21;
-    // LinkListAppointPosInsert(list, 2, (void *)&tmp);
+    // DoubleLinkListAppointPosInsert(list, 2, (void *)&tmp);
 
     int val = 6;
-    LinkListDelAppointData(list, (void *)&val, compareData);
+    DoubleLinkListDelAppointData(list, (void *)&val, compareData);
     /* 获取链表的长度 */
     int size = 0;
-    LinkListGetLength(list, &size);
+    DoubleLinkListGetLength(list, &size);
     printf("size:%d\n", size);
 
-    // LinkListForeach(list, printStruct);
-    LinkListForeach(list, printBasicData);
+    // DoubleLinkListForeach(list, printStruct);
+    DoubleLinkListForeach(list, printBasicData);
 
 
 
