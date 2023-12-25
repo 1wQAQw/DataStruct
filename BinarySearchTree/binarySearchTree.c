@@ -11,7 +11,26 @@ enum STATUS_CODE
     MALLOC_ERROR,
     INVALID_ACCESS,
 };
+static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2)
+{
+#if 0
+    if(val1 < val2)
+    {
+        return -1;
+    }
+    else if(val1 >val2)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+#else
+    return val1 - val2;
+#endif
 
+}
 /* 二叉搜索树的初始化 */
 int bianrySearchTreeInit(BinarySearchTree **pBstree)
 {
@@ -88,13 +107,30 @@ int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
 
     }
     
+    /* 分配新结点 */
+    BSTreeNode *newBstNode = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
+    if(newBstNode == NULL)
+    {
+        return MALLOC_ERROR;
+    }   
+    memset(newBstNode, 0, sizeof(BSTreeNode) * 1);
+    /* 初始化根节点 */
+    {
+        newBstNode->data = 0;
+        newBstNode->left = NULL;
+        newBstNode->right = NULL;
+        newBstNode->parent = NULL;
+    }
+    /* 新结点赋值 */
+    newBstNode->data = val;
+
     if(cmp < 0)
     {
-        parentNode->left =  (val的结点)
+        parentNode->left =  newBstNode;
     }
     else
     {
-        parentNode->right = (val的结点)
+        parentNode->right = newBstNode;
     }
 
 
