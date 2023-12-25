@@ -55,6 +55,8 @@ static BSTreeNode *createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parentNode)
     return newBstNode;
 }
 
+/* 根据指定的*/
+static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEMENTTYPE val,  int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2));
 
 /* 二叉搜索树的初始化 */
 int bianrySearchTreeInit(BinarySearchTree **pBstree)
@@ -211,5 +213,22 @@ int binarySearchTreeLevelOrderTravel()
 {
     int ret = 0;
     
+    return ret;
+}
+
+/* 根据指定*/
+static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
+{
+    BSTreeNode * traveNode = pBstree->root;
+    while(traveNode != NULL)
+    {
+
+    }
+}
+/* 二叉搜索树是否包含指定的元素 */
+int binarySearchTreeIsContainAppointval(BinarySearchTree *pBstree, ELEMENTTYPE val)
+{
+    int ret = 0;
+
     return ret;
 }

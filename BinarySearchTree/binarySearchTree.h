@@ -41,5 +41,7 @@ int binarySearchTreePostOrderTravel();
 /*二叉搜索树的前序遍历 */
 int binarySearchTreeLevelOrderTravel();
 
+/* 二叉搜索树是否包含指定的元素 */
+int binarySearchTreeIsContainAppointval(BinarySearchTree *pBstree, ELEMENTTYPE val);
 
 #endif
