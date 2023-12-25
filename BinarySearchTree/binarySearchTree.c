@@ -1,4 +1,6 @@
 #include "binarySearchTree.h"
+#include "DoubleLinkListQueue.h"
+#include "doubleLinkList.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -55,7 +57,7 @@ static BSTreeNode *createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parentNode)
     return newBstNode;
 }
 
-/* 根据指定的*/
+/* 根据指定的值获取元素*/
 static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEMENTTYPE val);
 
 /* 二叉搜索树的初始化 */
@@ -213,7 +215,31 @@ int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree)
 int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
 {
     int ret = 0;
+    DoubleLinkList * Queue = NULL;
+    doubleLinkListQueueInit(&Queue);
+
+    doubleLinkListQueuePush(Queue, pBstree->root);
     
+    BSTreeNode *nodeval = NULL;
+    while(!doubleLinkListQueueIsEmpty(Queue))
+    {
+        doubleLinkListQueueTop(Queue, (void **)&nodeval);
+        printf("data:%d\n", nodeval->data);
+        doubleLinkListQueuePop(Queue);
+
+        if(nodeval->left != NULL)
+        {
+            doubleLinkListQueuePush(Queue, nodeval->left);
+        }
+        if(nodeval->right != NULL)
+        {
+            doubleLinkListQueuePush(Queue, nodeval->right);
+        }
+    }
+
+    doubleLinkListQueueDestroy(Queue);
+
+
     return ret;
 }
 
@@ -225,6 +251,7 @@ static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEME
     int cmp = 0;
     while(traveNode != NULL)
     {
+        /* 比较大小 */
         cmp = pBstree->compareFunc(val, traveNode->data);
         if(cmp < 0)
         {
@@ -245,7 +272,5 @@ static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEME
 /* 二叉搜索树是否包含指定的元素 */
 int binarySearchTreeIsContainAppointval(BinarySearchTree *pBstree, ELEMENTTYPE val)
 {
-    int ret = 0;
-
-    return ret;
+    return baseAppointValGetBSTreeNode(pBstree, val) == NULL ? 1 : 0;
 }
