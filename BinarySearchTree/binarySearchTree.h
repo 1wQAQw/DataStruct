@@ -23,11 +23,14 @@ typedef struct BinarySearchTree
     int size;
 
     /* 钩子函数比较器 放到这个 */
-    int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2)
+    int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2);
+
+    /* 钩子函数 包装器实现自定义打印函数接口 */
+    int (*printFunc)(ELEMENTTYPE *val);
 }BinarySearchTree;
 
 /* 二叉搜索树的初始化 */
-int bianrySearchTreeInit(BinarySearchTree **pBstree,  int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2));
+int bianrySearchTreeInit(BinarySearchTree **pBstree,  int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2), int (*printFunc)(ELEMENTTYPE *val));
 
 /* 二叉搜索树的插入 */
 int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val);
