@@ -11,6 +11,7 @@ enum STATUS_CODE
     MALLOC_ERROR,
     INVALID_ACCESS,
 };
+/* 静态函数前置声明 */
 static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2)
 {
 #if 0
@@ -31,6 +32,30 @@ static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2)
 #endif
 
 }
+
+/* 创建结点 */
+static BSTreeNode *createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parentNode)
+{
+    BSTreeNode *newBstNode = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
+    if(newBstNode == NULL)
+    {
+        return MALLOC_ERROR;
+    }   
+    memset(newBstNode, 0, sizeof(BSTreeNode) * 1);
+    /* 初始化根节点 */
+    {
+        newBstNode->data = 0;
+        newBstNode->left = NULL;
+        newBstNode->right = NULL;
+        newBstNode->parent = NULL;
+    }
+
+    newBstNode->data = val;
+    newBstNode->parent = parentNode;
+    return newBstNode;
+}
+
+
 /* 二叉搜索树的初始化 */
 int bianrySearchTreeInit(BinarySearchTree **pBstree)
 {
@@ -49,17 +74,27 @@ int bianrySearchTreeInit(BinarySearchTree **pBstree)
 
     }
 
-    #if 1
-    bstree->root = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
-    /* 清除脏数据 */
-    memset(bstree->root, 0, sizeof(BSTreeNode) * 1);
-    /* 初始化根节点 */
-    {
-        bstree->root->data = 0;
-        bstree->root->left = NULL;
-        bstree->root->right = NULL;
-        bstree->root->parent = NULL;
-    }
+    #if 0
+        bstree->root = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
+        if(bstree->root == NULL)
+        {
+            return MALLOC_ERROR;
+        }   
+        /* 清除脏数据 */
+        memset(bstree->root, 0, sizeof(BSTreeNode) * 1);
+        /* 初始化根节点 */
+        {
+            bstree->root->data = 0;
+            bstree->root->left = NULL;
+            bstree->root->right = NULL;
+            bstree->root->parent = NULL;
+        }
+    #else
+        bstree->root = createBSTreeNewNode(0, NULL);
+        if (bstree->root == NULL)
+        {
+            return MALLOC_ERROR;
+        }
     #endif
 
     *pBstree = bstree;
@@ -67,7 +102,7 @@ int bianrySearchTreeInit(BinarySearchTree **pBstree)
 }
 
 /* 二叉搜索树的插入 */
-int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
+int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
 {
     int ret = 0;
 
@@ -89,7 +124,7 @@ int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
     while(traveNode != NULL)
     {
         parentNode = traveNode;
-        cmp = val - traveNode->data;
+        cmp = compareFunc(val, traveNode->data);
         /* 插入元素 < 遍历到的结点 */
         if(cmp < 0)
         {
@@ -106,7 +141,7 @@ int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
         }
 
     }
-    
+    #if 0
     /* 分配新结点 */
     BSTreeNode *newBstNode = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
     if(newBstNode == NULL)
@@ -123,20 +158,58 @@ int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
     }
     /* 新结点赋值 */
     newBstNode->data = val;
+    #else
+        BSTreeNode * newBstNode = createBSTreeNewNode(val, parentNode);
+    #endif
 
+    /* 挂在左子树 */
     if(cmp < 0)
     {
         parentNode->left =  newBstNode;
     }
     else
     {
+        /* 挂在右子树 */
         parentNode->right = newBstNode;
     }
+    #if 0
+    /* 新结点的partent指针赋值 */
+    newBstNode->parent = parentNode;
+    #endif
 
 
-
-
-
+    (pBstree->size)++;
     return ret;
 }
 
+/*二叉搜索树的前序遍历 */
+int binarySearchTreePreOrderTravel()
+{
+    int ret = 0;
+    
+    return ret;
+}
+
+/*二叉搜索树的前序遍历 */
+int binarySearchTreeInOrderTravel()
+{
+    int ret = 0;
+    
+    return ret;
+}
+
+/*二叉搜索树的前序遍历 */
+int binarySearchTreePostOrderTravel()
+{
+    int ret = 0;
+    
+    return ret;
+}
+
+/*二叉搜索树的前序遍历 */
+int binarySearchTreeLevelOrderTravel()
+{
+    int ret = 0;
+    
+    return ret;
+}
