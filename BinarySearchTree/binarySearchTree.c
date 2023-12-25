@@ -43,12 +43,64 @@ int bianrySearchTreeInit(BinarySearchTree **pBstree)
     }
     #endif
 
+    *pBstree = bstree;
     return ret;
 }
 
 /* 二叉搜索树的插入 */
-int bianrySearchTreeInsert(BinarySearchTree **pBstree, ELEMENTTYPE val)
+int bianrySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
 {
+    int ret = 0;
 
+    /* 空树 */
+    if(pBstree->size== 0)
+    {
+        /* 更新树的结点 */
+        (pBstree->size)++;
+
+        pBstree->root->data = val;
+    }
+
+    /* traveNode 指向跟结点 */
+    BSTreeNode * traveNode = pBstree->root;
+    BSTreeNode * parentNode = pBstree->root;
+
+    /* 确定符号：到底放在左边还是右边 */
+    int cmp = 0;
+    while(traveNode != NULL)
+    {
+        parentNode = traveNode;
+        cmp = val - traveNode->data;
+        /* 插入元素 < 遍历到的结点 */
+        if(cmp < 0)
+        {
+            traveNode = traveNode->left;
+        }
+        else if(cmp > 0)
+        {
+            traveNode = traveNode->right;   /* 插入元素 > 遍历到的结点 */
+        }
+        else
+        {
+            /* 插入元素 = 遍历到的结点 */
+            return ret;
+        }
+
+    }
+    
+    if(cmp < 0)
+    {
+        parentNode->left =  (val的结点)
+    }
+    else
+    {
+        parentNode->right = (val的结点)
+    }
+
+
+
+
+
+    return ret;
 }
 
