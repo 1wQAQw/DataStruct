@@ -8,13 +8,13 @@ typedef struct dynamicArray
 {
     ELEMENTTYPE *data;          /* s数组的空间 */
     int len;            /* 数组的大小 */
-    int capactity;      /* 数组的容量 */
+    int capacity;      /* 数组的容量 */
 }dynamicArray;
 
 
 /* API：appliction program interface */
 /* 动态数组初始化 */
-int dynamicArrayInit(dynamicArray *pArray);
+int dynamicArrayInit(dynamicArray *pArray, int capacity);
 
 /* 动态数组插入数据(默认插入到数组末尾) */
 int dynamicArrayInsertData(dynamicArray *pArray, ELEMENTTYPE val);
