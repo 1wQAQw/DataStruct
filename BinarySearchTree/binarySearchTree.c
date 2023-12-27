@@ -131,7 +131,7 @@ static int binarySearchTreeNodechildeens(BSTreeNode *node)
 static BSTreeNode * bstreeNodepreDecessor(BSTreeNode *node)
 {
     /* 度为2 */
-    if(binarySearchTreeHasTwochildeens(node))
+    if(node->left != NULL)
     {
         BSTreeNode *travelNode = node->left;
         while(travelNode->right != NULL)
@@ -140,15 +140,36 @@ static BSTreeNode * bstreeNodepreDecessor(BSTreeNode *node)
         }
         return travelNode;
     }
-    /* 程序到这个地方一定是度为1 或者 度为0的 */
-
-    /* 度为1 */
-
-    /* 度为0 */
-
+    /* 程序到这个地方 说明一定没有左子树 那就需要父结点找 */
+    while(node->parent != NULL && node == node->parent->left)
+    {
+        node = node->parent;
+    }
+    /* node->parent == NULL */
+    /* node = node->parent->right */
+    return node->parent;
 }
 /* 获取当前结点的后继结点 */
-static BSTreeNode * bstreeNodepreSuccessor(BSTreeNode *node);
+static BSTreeNode * bstreeNodepreSuccessor(BSTreeNode *node)
+{
+    if(node->right != NULL)
+    {
+        BSTreeNode *travelNode = node->right;
+        while(travelNode->left != NULL)
+        {
+            travelNode = travelNode->left;
+        }
+        return travelNode;
+    }
+    /* 程序到这个地方 说明一定没有左子树 那就需要父结点找 */
+    while(node->parent != NULL && node == node->parent->right)
+    {
+        node = node->parent;
+    }
+    /* node->parent == NULL */
+    /* node = node->parent->right */
+    return node->parent;
+}
 
 static BSTreeNode *createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parent)
 {
@@ -408,7 +429,6 @@ static int obtainHeight(BinarySearchTree *pBstree, BSTreeNode *node)
 		return 0;
     }
 }
-
 
 static int sequenceObtainHeight(BinarySearchTree *pBstree, int *pHight)
 {
