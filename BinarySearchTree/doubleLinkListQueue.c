@@ -1,9 +1,9 @@
-#include "DoubleLinkListQueue.h"
-
+#include "doubleLinkListQueue.h"
+#include "doubleLinkList.h"
 
 
 /* 队列初始化*/
-int doubleLinkListQueueInit(DoubleLinkListQueue *pQueue)
+int doubleLinkListQueueInit(DoubleLinkListQueue **pQueue)
 {
     return DoubleLinkListInit(pQueue);
 }
@@ -13,35 +13,35 @@ int doubleLinkListQueuePush(DoubleLinkListQueue *pQueue, ELEMENTTYPE val)
 {
     return DoubleLinkListTailInsert(pQueue, val);
 }
-
-int doubleLinkListQueueTop(DoubleLinkListQueue *pQueue, ELEMENTTYPE val)
+/* 队头元素 */
+int doubleLinkListQueueTop(DoubleLinkListQueue *pQueue, ELEMENTTYPE pVal)
 {
-    return doubleLinkListGetHeadVal(pQueue, val);
+    return DoubleLinkListGetHeadVal(pQueue, pVal);
 }
-
-int doubleLinkListQueueRear(DoubleLinkListQueue *pQueue, ELEMENTTYPE val)
+/* 队尾元素 */
+int doubleLinkListQueueRear(DoubleLinkListQueue *pQueue, ELEMENTTYPE pVal)
 {
-    return 0;
+    return DoubleLinkListGetTailVal(pQueue, pVal);
 }
-
+/* 队列出队 */
 int doubleLinkListQueuePop(DoubleLinkListQueue *pQueue)
 {
-    return 0;
+    return DoubleLinkListHeadDel(pQueue);
 }
-
+/* 队列大小 */
 int doubleLinkListQueueGetSize(DoubleLinkListQueue *pQueue, int *pSize)
 {
     return DoubleLinkListGetLength(pQueue, pSize);
 }
-
+/* 队列是否为空 */
 int doubleLinkListQueueIsEmpty(DoubleLinkListQueue *pQueue)
 {
     int size = 0;
     DoubleLinkListGetLength(pQueue, &size);
     return size == 0 ? 1 : 0;
 }
-
+/* 队列销毁 */
 int doubleLinkListQueueDestroy(DoubleLinkListQueue *pQueue)
 {
-    return doubleLinkListDestory(pQueue);
+    return DoubleLinkListDestory(pQueue);
 }

@@ -1,9 +1,9 @@
 #ifndef __BINARY_SEARCH_TREE_H_
 #define __BINARY_SEARCH_TREE_H_
 
-#define ELEMENTTYPE int
+#define ELEMENTTYPE void*
 
-typedef struct BSTreeNote
+typedef struct BSTreeNode
 {
     ELEMENTTYPE data;
     struct BSTreeNode *left;    /* 左子树 */
@@ -50,4 +50,9 @@ int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree);
 /* 二叉搜索树是否包含指定的元素 */
 int binarySearchTreeIsContainAppointval(BinarySearchTree *pBstree, ELEMENTTYPE val);
 
+/* 获取二叉搜索树的高度 */
+int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHight);
+
+/* 二叉搜索树的删除 */
+int binarySearchTreeDelete(BinarySearchTree *pBstree);
 #endif

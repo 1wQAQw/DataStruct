@@ -283,7 +283,7 @@ static int DoubleLinkListAccordAppointValGetPos(DoubleLinkList * pList, ELEMENTT
 }
 
 /* 链表删除指定的数据 */
-int DoubleLinkListDelAppointData(DoubleLinkList * pList, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE, ELEMENTTYPE))
+int DoubleLinkListDelAppointData(DoubleLinkList * pList, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
 {
     int ret = 0;
     /* 元素在链表中的位置 */
@@ -319,7 +319,7 @@ int DoubleLinkListGetLength(DoubleLinkList * pList, int *pSize)
 }
 
 /* 链表的销毁 */
-int DoubleLinkListDestroy(DoubleLinkList * pList)
+int DoubleLinkListDestory(DoubleLinkList * pList)
 {
     int ret = 0;
     /* 我们使用头删释放链表 */
@@ -393,3 +393,27 @@ int DoubleLinkListReverserForeach(DoubleLinkList * pList, int (*printFunc)(ELEME
     }
 }
 
+/* 获取链表 头位置值 */
+int DoubleLinkListGetHeadVal(DoubleLinkList *pList, ELEMENTTYPE *pVal)
+{
+     #if 0
+    return DoubleLinkListGetAppointPosVal(pList, 0, pVal);
+    #else
+    int ret = 0;
+    if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
+    if (pVal)
+    {
+        *pVal = pList->head->next->data;
+    }
+    return ret;
+    #endif
+}
+
+/* 获取链表 尾位置值 */
+int DoubleLinkListGetTailVal(DoubleLinkList *pList, ELEMENTTYPE *pVal)
+{
+    
+}
