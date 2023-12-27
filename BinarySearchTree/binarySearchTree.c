@@ -481,7 +481,7 @@ int binarySearchTreeDestroy(BinarySearchTree *pBstree)
 
     DoubleLinkList * pQueue = NULL;
     doubleLinkListQueueInit(&pQueue);
-
+    doubleLinkListQueuePush(pQueue, pBstree->root);
     BSTreeNode * travelNode = NULL;
     while(!doubleLinkListQueueIsEmpty(pQueue))
     {
