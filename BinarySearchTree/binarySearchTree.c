@@ -408,6 +408,8 @@ static int obtainHeight(BinarySearchTree *pBstree, BSTreeNode *node)
 		return 0;
     }
 }
+
+
 static int sequenceObtainHeight(BinarySearchTree *pBstree, int *pHight)
 {
     int ret = 0;
@@ -466,4 +468,54 @@ int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *Phight)
     *Phight =sequenceObtainHeight(pBstree, pHight)
     #endif
     return 0;
+}
+
+/* 二叉搜索树的销毁 */
+int binarySearchTreeDestroy(BinarySearchTree *pBstree)
+{
+    int ret = 0;
+    if(pBstree == NULL)
+    {
+        return NULL_PTR;
+    }
+
+    DoubleLinkList * pQueue = NULL;
+    doubleLinkListQueueInit(&pQueue);
+
+    BSTreeNode * travelNode = NULL;
+    while(!doubleLinkListQueueIsEmpty(pQueue))
+    {
+        doubleLinkListQueueTop(pQueue, (void **)&travelNode);
+        doubleLinkListQueuePop(pQueue);
+
+
+        /* 将左子树入队 */
+        if(travelNode->left != NULL)
+        {
+            doubleLinkListQueuePush(pQueue, travelNode->left);
+        }
+        /* 将右子树入队 */
+        if(travelNode->right != NULL)
+        {
+            doubleLinkListQueuePush(pQueue, travelNode->right);
+        }
+
+        if(travelNode)
+        {
+            free(travelNode);
+            travelNode = NULL;
+        }
+    }
+    
+    /* 释放队列 */
+    doubleLinkListQueueDestroy(pQueue);
+    
+    /*释放树*/
+    if(pBstree)
+    {
+        free(pBstree);
+        pBstree = NULL;
+    }
+        
+    return ret;
 }
